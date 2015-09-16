@@ -7,6 +7,8 @@ for(t in 1:ttMax){
 NN
 NO<-400
 R<-0.99
+############################
+##Exercise 3.2.2
 geometricGrowthFun<- function(R, NO, ttMax){
   NN<-matrix(NA, nrow=1, ncol=ttMax+1)
   NN[1]<-NO
