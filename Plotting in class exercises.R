@@ -73,13 +73,51 @@ plot(freq,het,xlab="Frequency", ylab="Heterozygosity")
 
 ### Applying a Chi Square Test
 
-compute_chisquare=function(x) [
-  freq=sum(x, na.rm=TRUE)/(2.0*sum(!is.na(x)))
-  cnt0 = sum(x==0, na.rm=TRUE)
-  cnt1 = sum(x==1, na.rm=TRUE)
-  cnt2 = sum(x==2, na.rm=TRUE)
-  obscnts = c(cnt0, cnt1,cnt2)
+
+compute_chisquare=function(x){
+  freq=sum(x,na.rm=TRUE)/(2.0*sum(!is.na(x)))
+  cnt0=sum(x==0,na.rm=TRUE)
+  cnt1=sum(x==1,na.rm=TRUE)
+  cnt2=sum(x==2,na.rm=TRUE)
+  obscnts=c(cnt0,cnt1,cnt2)
   #print(obscnts)
   n=sum(obscnts)
-  ##
-]
+  expcnts=c((1-freq)^2,2*freq*(1-freq),freq^2)*n
+  chisq=sum((obscnts-expcnts)^2/expcnts)
+  return(chisq)
+}
+
+
+compute_chisquare_2=function(x){
+  freq=sum(x,na.rm=TRUE)/(2.0*sum(!is.na(x)))
+  cnt0=sum(x==0,na.rm=TRUE)
+  cnt1=sum(x==1,na.rm=TRUE)
+  cnt2=sum(x==2,na.rm=TRUE)
+  obscnts=c(cnt0,cnt1,cnt2)
+  #print(obscnts)
+  n=sum(obscnts)
+  #here we use the built-in function for the chi-sq distribution:
+  exp_probs=c((1-freq)^2,2*freq*(1-freq),freq^2) #note, here we don't multiply by n
+  chisq<-chisq.test(obscnts,p=exp_probs, correct = FALSE)$statistic
+  return(chisq)
+}
+
+
+
+
+chisqs=apply(snps,1,compute_chisquare)
+chisqs2=apply(snps,1,compute_chisquare_2)
+#check to see that the chisquare statistcs are the same:
+#first do this by computing Pearson's correlation coefficient:
+chisqs2=apply(snps,1,compute_chisquare_2)
+#create scatterplot
+plot(chisqs, chisqs2)
+# Compute p-values for each chi-square value using the pchisq 
+
+pvals=pchisq(chisqs,1,lower.tail=FALSE)
+chisqs2=apply(snps,1,compute_chisquare_2)
+###save in a vector
+signifthres<- 0.05
+sum(pvals<signifthres)
+exp_pvals<- seq(from=(1/num_pval), to=1, by=(1/num_pval))
+exp_pvals

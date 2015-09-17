@@ -29,3 +29,15 @@ pdf("exercise_g_plot.pdf", width=4, height=7)
 plot(log_exp_pvals, log_sort_pvals, col=1, pch=9)
 lines(0:5, 0:5, col=2, lwd=3 )
 dev.off()
+
+
+##### Exercise 2
+
+
+zz=read.table('pheno.sim.2014-1.txt', header=TRUE)
+maxvalue<- quantile(zz[, 2], 0.25)
+## 4.768756
+desiredrows<- which(zz[,2]<maxvalue)
+quantile(zz[, 2], 0.75)
+## 7.354975
+cases<- zz[desiredrows, ]
