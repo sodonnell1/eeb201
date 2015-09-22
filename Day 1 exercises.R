@@ -13,8 +13,35 @@ geometricGrowthFun<- function(R, NO, ttMax){
   NN<-matrix(NA, nrow=1, ncol=ttMax+1)
   NN[1]<-NO
   for(t in 1:ttMax){
-    NN[t+1]<- R*NN[t]}
+    NN[t+1]<-R*NN[t] }
   plot(1:(ttMax+1), NN, lty=2, type='l', xlab='time', ylab='N', col='red')
 }
 geometricGrowthFun(0.95, 10, 10)
 geometricGrowthFun(1.05, 10, 10)
+
+
+######Exercise 3.3.1
+
+DiscreteLogisticFun<- function(rr, NO, ttMax, KK){
+     NN<-matrix(NA, nrow=1, ncol=ttMax+1)
+     NN[1]<-NO
+     for(t in 1:ttMax){
+         NN[t+1]<- NN[t]*(1+rr*(1-NN[t]/KK))}
+     plot(1:(ttMax+1), NN, lty=2, type='l', xlab='time', ylab='N', col='red')
+   }
+
+DiscreteLogisticFun(NO=10, rr=0.5, ttMax= 10, KK=100 )
+
+
+######Exercise 3.3.2
+
+
+rvector<- c(-0.3, 0.3, 1.3, 1.9, 2.2, 2.7)
+par(mfrow= c(2, 3))
+for(rr in rvector){
+  DiscreteLogisticFun(NO=10, rr=rr, ttMax= 10, KK=100 )
+}
+
+
+
+#####Exercise 3.4.1
