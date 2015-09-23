@@ -18,6 +18,8 @@ exp_pvals<- seq(from=(1/num_pval), to=1, by=(1/num_pval))
 ###sorting the vector
 pvaluesorta<- sort(pvals, decreasing=FALSE)
 pvaluesort<- sort(exp_pvals, decreasing=FALSE)
+
+
 ####### QQ plot and log versions of pvals
 -log10(pvals)
 -log10(exp_pvals)
@@ -35,9 +37,36 @@ dev.off()
 
 
 zz=read.table('pheno.sim.2014-1.txt', header=TRUE)
-maxvalue<- quantile(zz[, 2], 0.25)
-## 4.768756
-desiredrows<- which(zz[,2]<maxvalue)
+
+
+firstvalue<- quantile(zz[, 2], 0.25)
+controls<-which(quantile(zz[, 2], 0.25))
+print(controls)
+
+maxvalue<- quantile(zz[,3], 0.75)
+cases<- which(zz[,2]>maxvalue)
+print(cases)
+
 quantile(zz[, 2], 0.75)
 ## 7.354975
+
+
 cases<- zz[desiredrows, ]
+pdf("Glucose_levels_plot.pdf", width=6, height=6)
+plot(density(zz[,2]), col=4, lwd=3, xlab="Individuals", ylab="Glucose Levels", xlim=c(3,9))
+abline(v=quantile(zz[, 2], 0.75), col=3, lwd=3, lty=2)
+abline(v=quantile(zz[, 2], 0.25), col=8, lwd=3, lty=2)
+dev.off()
+
+
+#####Extractions
+
+case_genotypes<- snpsDataFrame['rs7584086_T', cases]
+case_genotypes
+
+control_genotypes<- snpsDataFrame['rs7584086_T', controls]
+control_genotypes
+
+
+table(as.numeric(control_genotypes))
+table(as.numeric(case_genotypes))
