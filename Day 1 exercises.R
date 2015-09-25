@@ -73,3 +73,15 @@ plot(expGrowthOutput[,1], expGrowthOutput[,2], col=4, type="l")
 
 
 ######4.2.1
+
+
+Growth<-  function(tt, NN, KK, pars){
+  output<- (rr*NN)*(1-NN/KK)
+  return(list(output))
+}
+wholegrowth<- lsoda(init, tseq, Growth, pars)
+plot(wholegrowth[,1], wholegrowth[,2], col=4, type="l")
+pars<- 0.2
+NN<- 100
+KK<- 0.5
+rr<- 1.2
