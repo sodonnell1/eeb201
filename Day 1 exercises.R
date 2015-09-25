@@ -44,4 +44,32 @@ for(rr in rvector){
 
 
 
-#####Exercise 3.4.1
+#####Exercise 4.1.1
+
+
+
+
+install.packages("deSolve")
+library("deSolve")
+
+init <- 1
+tseq <- seq(0, 20, by=0.01)
+pars <- c(rr = 0.1)
+pars <- 0.1
+
+
+
+expGrowthODE  <- function(tt, yy, pars) {
+  derivs <- pars* yy
+  return(list(derivs))
+}
+
+
+expGrowthOutput <- lsoda( init, tseq, expGrowthODE, pars)
+expGrowthODE(init, tseq,pars)
+expGrowthOutput <- lsoda( init, tseq, expGrowthODE, pars)
+plot(expGrowthOutput[,1], expGrowthOutput[,2], col=4, type="l")
+
+
+
+######4.2.1
